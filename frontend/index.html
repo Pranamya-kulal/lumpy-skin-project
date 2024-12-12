@@ -1,0 +1,212 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumpy Skin Disease Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding-top: 50px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .container {
+            margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        input[type="file"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Lumpy Skin Disease Detection</h1>
+    <div class="container">
+        <h3>Upload an image of your cattle:</h3>
+        <input type="file" id="imageUpload" accept="image/*">
+        <button onclick="predictDisease()">Submit</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function predictDisease() {
+    var fileInput = document.getElementById('imageUpload');
+    var resultDiv = document.getElementById('result');
+
+    if (fileInput.files.length == 0) {
+        resultDiv.innerHTML = "Please upload an image!";
+        resultDiv.style.color = "red";
+        return;
+    }
+
+    var image = fileInput.files[0];
+    var formData = new FormData();
+    formData.append("file", image);
+
+    fetch('http://127.0.0.1:5000/predict', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            resultDiv.innerHTML = "Error: " + data.error;
+            resultDiv.style.color = "red";
+        } else {
+            resultDiv.innerHTML = "Prediction: " + data.prediction;
+            resultDiv.style.color = "blue";
+        }
+    })
+    .catch(error => {
+        resultDiv.innerHTML = "Error: " + error.message;
+        resultDiv.style.color = "red";
+    });
+}
+
+    </script>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumpy Skin Disease Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding-top: 50px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .container {
+            margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        input[type="file"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        #uploadedImage {
+            max-width: 400px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Lumpy Skin Disease Detection</h1>
+    <div class="container">
+        <h3>Upload an image of your cattle:</h3>
+        <input type="file" id="imageUpload" accept="image/*">
+        <button onclick="predictDisease()">Submit</button>
+
+        <div id="result"></div>
+        <img id="uploadedImage" src="" alt="Uploaded Image" />
+    </div>
+
+    <script>
+        function predictDisease() {
+            var fileInput = document.getElementById('imageUpload');
+            var resultDiv = document.getElementById('result');
+            var uploadedImage = document.getElementById('uploadedImage');
+
+            if (fileInput.files.length == 0) {
+                resultDiv.innerHTML = "Please upload an image!";
+                resultDiv.style.color = "red";
+                return;
+            }
+
+            var image = fileInput.files[0];
+            var formData = new FormData();
+            formData.append("file", image);
+
+            // Display the uploaded image
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedImage.src = e.target.result;
+                uploadedImage.style.display = "block";
+            };
+            reader.readAsDataURL(image);
+
+            // Send the image to the backend for prediction
+            fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    resultDiv.innerHTML = "Error: " + data.error;
+                    resultDiv.style.color = "red";
+                } else {
+                    resultDiv.innerHTML = "Prediction: " + data.prediction;
+                    resultDiv.style.color = "blue";
+                }
+            })
+            .catch(error => {
+                resultDiv.innerHTML = "Error: " + error.message;
+                resultDiv.style.color = "red";
+            });
+        }
+    </script>
+
+</body>
+</html>
