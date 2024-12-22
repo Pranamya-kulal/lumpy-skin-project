@@ -1,66 +1,354 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumpy Skin Disease Detection</title>
+    <title>Cattle Guard - Lumpy Skin Disease Detection</title>
     <style>
+        /* Default Dark Mode */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            text-align: center;
-            padding-top: 50px;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #1e1e1e, #333);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
         }
         h1 {
-            color: #4CAF50;
+            /*color: #4CAF50;*/
+            color: darkseagreen;
+            margin: 0;
+            font-size: 36px;
+        }
+        .header {
+            background-color: #222;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            background: linear-gradient(45deg, #333, #4CAF50);
         }
         .container {
-            margin-top: 30px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            padding: 120px 40px 40px;
+            flex-wrap: wrap;
+        }
+        .left-panel, .right-panel {
+            background-color: #222;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-top: 40px;
+        }
+        .left-panel {
+            width: 30%;
+            min-width: 300px;
+            position: fixed;
+            top: 100px;
+            left: 40px;
+        }
+        .right-panel {
             width: 60%;
-            margin-left: auto;
-            margin-right: auto;
+            min-width: 350px;
+            margin-left: 35%;
         }
-        input[type="file"] {
-            padding: 10px;
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
+        input[type="file"], button {
+            padding: 15px;
             font-size: 18px;
+            background-color: #333;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: 10px;
+            color: #fff;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
         }
-        button:hover {
-            background-color: #45a049;
+        input[type="file"]:hover, button:hover {
+            background-color: #4CAF50;
         }
         #result {
             margin-top: 20px;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
         }
+        #uploadedImage {
+            max-width: 400px;
+            margin-top: 20px;
+            display: none;
+        }
+        .content {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+        .accordion {
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            font-size: 18px;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+        .accordion:hover {
+            background-color: #4CAF50;
+        }
+        .panel {
+            padding: 0 18px;
+            display: none;
+            background-color: #444;
+            overflow: hidden;
+        }
+        .footer {
+            background-color: #222;
+            color: #aaa;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .facts {
+            font-size: 18px;
+            color: #ddd;
+        }
+        .news-section {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        /* Light Mode Styles */
+        body.light-mode {
+            background: linear-gradient(45deg, #f0f0f0, #ccc);
+            color: #333;
+        }
+        body.light-mode .header {
+            background: linear-gradient(45deg, #ccc, #4CAF50);
+        }
+        body.light-mode .left-panel, body.light-mode .right-panel {
+            background-color: #fff;
+            color: #333;
+        }
+        body.light-mode .content {
+            color: #444;
+        }
+        body.light-mode input[type="file"], body.light-mode button {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        body.light-mode input[type="file"]:hover, body.light-mode button:hover {
+            background-color: #4CAF50;
+        }
+       /* Light Mode Title */
+body.light-mode h1 {
+    color: #023604; /* Keep the title color green in light mode */
+}
+
+
+
+        /* Light Mode Updates for Latest Updates and Cattle Facts */
+body.light-mode .news-section {
+    background-color: #f0f0f0; /* Lighter background for the news section in light mode */
+    color: #333; /* Dark text color for readability */
+}
+
+body.light-mode .facts {
+    background-color: #f0f0f0; /* Lighter background for facts in light mode */
+    color: #333; /* Dark text color for readability */
+}
+
+/* Additional Tweaks for Content Visibility in Light Mode */
+body.light-mode .news-section h3, 
+body.light-mode .facts {
+    color: #333; /* Ensure headings are dark in light mode */
+}
+
+/* Adjust the background color for the footer in light mode */
+body.light-mode .footer {
+    background-color: #e0e0e0; /* Light footer in light mode */
+    color: #333; /* Dark footer text */
+}
+
+
+
+/* Light Mode Adjustments for Health Tips */
+body.light-mode .accordion {
+    background-color: #fff; /* White background in light mode */
+    color: #333; /* Dark text in light mode */
+}
+
+body.light-mode .panel {
+    background-color: #f5f5f5; /* Lighter background for panel */
+    color: #333; /* Dark text in panel */
+}
+
+body.light-mode .accordion:hover {
+    background-color: #4CAF50; /* Green on hover */
+}
+
+/* Ensure the panel is visible in light mode */
+body.light-mode .panel p, body.light-mode .panel ul {
+    color: #333; /* Dark text in the panel for better visibility */
+}
+
+        /* Toggle Button */
+        .toggle-btn {
+    padding: 10px 10px; /* Smaller padding */
+    font-size: 15px; /* Smaller font size */
+    background-color: #000d03;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    position: fixed;
+    top: 15px; /* Top corner */
+    right: 15px; /* Right corner */
+    z-index: 11;
+    width: auto; /* Remove width property to prevent it from expanding */
+    height: auto; /* Adjust height to fit content */
+}
+
+/* Loading Spinner Styles */
+.loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    display: none; /* Hidden by default */
+}
+
+.spinner {
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #4CAF50; /* Green */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
     </style>
 </head>
 <body>
 
-    <h1>Welcome to Lumpy Skin Disease Detection</h1>
-    <div class="container">
-        <h3>Upload an image of your cattle:</h3>
-        <input type="file" id="imageUpload" accept="image/*">
-        <button onclick="predictDisease()">Submit</button>
-        <div id="result"></div>
+    <div class="header">
+        <h1>Cattle Guard - Lumpy Skin Disease Detection</h1>
     </div>
+
+    <!-- Dark/Light Mode Toggle -->
+    <button class="toggle-btn" onclick="toggleMode()">Switch to Light Mode</button>
+
+    <div class="container">
+        <div class="left-panel">
+            <h3>Upload Image of Cattle</h3>
+            <input type="file" id="imageUpload" accept="image/*">
+            <button onclick="predictDisease()">Submit</button>
+            <div id="result"></div>
+            <img id="uploadedImage" src="" alt="Uploaded Image" />
+        </div>
+
+        <div class="right-panel">
+            <div class="content">
+                <div class="title">What is Lumpy Skin Disease (LSD)?</div>
+                <p>
+                    Lumpy Skin Disease (LSD) is a viral infection that affects cattle, causing lumps or nodules on the skin, fever, and general weakness. It spreads rapidly through vector insects like mosquitoes and biting flies.
+                </p>
+            </div>
+
+            <div class="content">
+                <div class="title">Why Is LSD Harmful?</div>
+                <p>
+                    LSD leads to severe economic losses due to reduced milk production, weight loss, and in severe cases, death. It can devastate cattle herds, especially in tropical and subtropical regions.
+                </p>
+            </div>
+
+            <div class="content">
+                <div class="title">Precautions and Measures</div>
+                <p>
+                    To prevent and control LSD:
+                    <ul>
+                        <li>Vaccination is the most effective way to protect cattle.</li>
+                        <li>Use insecticides and manage vector populations to reduce the spread.</li>
+                        <li>Implement quarantine measures for affected cattle to prevent further outbreaks.</li>
+                        <li>Maintain strict hygiene and control cattle movement.</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="content">
+                <div class="title">Healthy vs Infected Cattle</div>
+                <p>
+                    Healthy cattle have clear, smooth skin and show no signs of lumps or other visible infections. In contrast, cattle affected by LSD have visible lumps, fever, and may appear lethargic. Early detection and treatment are essential for minimizing the spread.
+                </p>
+                <img src="C:\Users\pranamya\Desktop\LumpySkinProject\frontend\cowhealthy.jpg" alt="Healthy Cattle" style="width: 100%; max-width: 500px; margin-top: 20px;">
+                <img src="C:\Users\pranamya\Desktop\LumpySkinProject\frontend\lumpy_skin_meghalaya-sixteen_nine.avif" alt="Infected Cattle" style="width: 100%; max-width: 500px; margin-top: 20px;">
+            </div>
+
+            <!-- Accordion for tips -->
+            <div class="content">
+                <div class="title">Cattle Care Tips</div>
+                <button class="accordion">Click here for Cattle Health Tips</button>
+                <div class="panel">
+                    <p>Proper care of cattle includes ensuring they have a balanced diet, adequate water, and clean living environments. Regular health checks are crucial to spot early signs of diseases.</p>
+                    <ul>
+                        <li>Provide clean and fresh water daily.</li>
+                        <li>Feed them with balanced nutrients for better milk and growth.</li>
+                        <li>Ensure cattle have adequate shelter from extreme weather.</li>
+                        <li>Consult a veterinarian for routine check-ups.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="news-section">
+                <h3>Latest Updates in Cattle Health</h3>
+                <p>Stay informed with the latest tips and research on cattle health and farming:</p>
+                <ul>
+                    <li><strong>New research shows:</strong> Early vaccination against LSD drastically reduces the spread.</li>
+                    <li><strong>Farmers' best practices:</strong> Routine hygiene and pest control are key to preventing outbreaks.</li>
+                    <li><strong>Tech in agriculture:</strong> AI tools are now used to detect cattle diseases early.</li>
+                </ul>
+            </div>
+
+            <div class="content">
+                <div class="title">Cattle Facts</div>
+                <p class="facts">
+                    Did you know? Cattle are one of the most economically important animals worldwide, providing milk, meat, leather, and more. They have been domesticated for over 10,000 years.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Cattle Guard. All rights reserved.</p>
+    </div>
+<!-- Loading Spinner -->
+<div class="loading" id="loadingSpinner" style="display: none;">
+    <div class="spinner"></div>
+</div>
+
 
     <script>
         function predictDisease() {
     var fileInput = document.getElementById('imageUpload');
     var resultDiv = document.getElementById('result');
+    var uploadedImage = document.getElementById('uploadedImage');
+    var loadingSpinner = document.getElementById('loadingSpinner');
 
     if (fileInput.files.length == 0) {
         resultDiv.innerHTML = "Please upload an image!";
@@ -72,101 +360,59 @@
     var formData = new FormData();
     formData.append("file", image);
 
+    // Display the uploaded image
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        uploadedImage.src = e.target.result;
+        uploadedImage.style.display = "block";
+    };
+    reader.readAsDataURL(image);
+
+    // Show loading spinner
+    loadingSpinner.style.display = "block"; // Ensure the spinner is visible
+
+    // Send the image to the backend for prediction
     fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
         body: formData,
     })
     .then(response => response.json())
     .then(data => {
+        loadingSpinner.style.display = "none"; // Hide spinner
         if (data.error) {
             resultDiv.innerHTML = "Error: " + data.error;
             resultDiv.style.color = "red";
         } else {
             resultDiv.innerHTML = "Prediction: " + data.prediction;
-            resultDiv.style.color = "blue";
+            resultDiv.style.color = "green";
         }
     })
     .catch(error => {
-        resultDiv.innerHTML = "Error: " + error.message;
+        loadingSpinner.style.display = "none"; // Hide spinner
+        resultDiv.innerHTML = "An error occurred while predicting. Please try again.";
         resultDiv.style.color = "red";
+        console.error("Error:", error);
     });
 }
 
-    </script>
+        // Toggle Dark/Light Mode
+        function toggleMode() {
+            var body = document.body;
+            var toggleButton = document.querySelector(".toggle-btn");
 
-</body>
-</html> -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumpy Skin Disease Detection</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            text-align: center;
-            padding-top: 50px;
+            body.classList.toggle("light-mode");
+            if (body.classList.contains("light-mode")) {
+                toggleButton.innerText = "Switch to Dark Mode";
+            } else {
+                toggleButton.innerText = "Switch to Light Mode";
+            }
         }
-        h1 {
-            color: #4CAF50;
-        }
-        .container {
-            margin-top: 30px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 60%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        input[type="file"] {
-            padding: 10px;
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #result {
-            margin-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        #uploadedImage {
-            max-width: 400px;
-            margin-top: 20px;
-            display: none;
-        }
-    </style>
-</head>
-<body>
 
-    <h1>Welcome to Lumpy Skin Disease Detection</h1>
-    <div class="container">
-        <h3>Upload an image of your cattle:</h3>
-        <input type="file" id="imageUpload" accept="image/*">
-        <button onclick="predictDisease()">Submit</button>
-
-        <div id="result"></div>
-        <img id="uploadedImage" src="" alt="Uploaded Image" />
-    </div>
-
-    <script>
         function predictDisease() {
             var fileInput = document.getElementById('imageUpload');
             var resultDiv = document.getElementById('result');
             var uploadedImage = document.getElementById('uploadedImage');
+            var loadingSpinner = document.getElementById('loadingSpinner');
 
             if (fileInput.files.length == 0) {
                 resultDiv.innerHTML = "Please upload an image!";
@@ -186,6 +432,9 @@
             };
             reader.readAsDataURL(image);
 
+            // Show loading spinner
+            loadingSpinner.style.display = "block";
+
             // Send the image to the backend for prediction
             fetch('http://127.0.0.1:5000/predict', {
                 method: 'POST',
@@ -193,20 +442,38 @@
             })
             .then(response => response.json())
             .then(data => {
+                loadingSpinner.style.display = "none"; // Hide spinner
                 if (data.error) {
                     resultDiv.innerHTML = "Error: " + data.error;
                     resultDiv.style.color = "red";
                 } else {
                     resultDiv.innerHTML = "Prediction: " + data.prediction;
-                    resultDiv.style.color = "blue";
+                    resultDiv.style.color = "green";
                 }
             })
             .catch(error => {
-                resultDiv.innerHTML = "Error: " + error.message;
+                loadingSpinner.style.display= "none"; // Hide spinner
+                resultDiv.innerHTML = "An error occurred while predicting. Please try again.";
                 resultDiv.style.color = "red";
+                console.error("Error:", error);
             });
         }
+
+        // Accordion functionality
+        var accordions = document.querySelectorAll(".accordion");
+        accordions.forEach(function(accordion) {
+            accordion.addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+        });
     </script>
 
 </body>
 </html>
+
